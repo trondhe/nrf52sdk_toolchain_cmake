@@ -73,11 +73,16 @@ add_compile_options(
 )
 
 add_link_options(
-    -gc-sections
-    --specs=nano.specs
-    -lc
-    -lnosys
-    -lm
+    -X
+    --omagic
+    -eReset_Handler
+    --defsym=__vfprintf=__vfprintf_long
+    --defsym=__vfscanf=__vfscanf_long
+    -EL
+    --gc-sections
+    --emit-relocs
+    --print-memory-usage
+    -T${NRF5_LINKER_SCRIPT}
 )
 
 set(CMAKE_C_COMPILER "${ARM_NONE_EABI_TOOLCHAIN_PATH}/bin/arm-none-eabi-gcc")
