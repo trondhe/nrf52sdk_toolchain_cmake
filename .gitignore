@@ -6,3 +6,5 @@
 
 # SEGGER Embedded Studio
 **/ses/Output
+
+build/
