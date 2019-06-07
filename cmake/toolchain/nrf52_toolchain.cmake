@@ -5,54 +5,121 @@
 #s132 for nrf52810, nrf52832
 #s140 for nrf52840
 
-if (NOT ARM_NONE_EABI_TOOLCHAIN_PATH)
-    message(FATAL_ERROR "The path to the arm-none-eabi-gcc toolchain (ARM_NONE_EABI_TOOLCHAIN_PATH) must be set.")
+set(CMAKE_CXX_COMPILER_WORKS 1)
+set(CMAKE_C_COMPILER_WORKS 1)
+set(CMAKE_ASM_COMPILER_WORKS 1)
+# Set environment variables to cmake variables
+if(NOT DEFINED ENV{ARM_TOOLCHAIN_PATH})
+    message(FATAL_ERROR "The path to the arm-none-eabi-gcc toolchain (ARM_TOOLCHAIN_PATH) must be set.")
 endif ()
 
-if (NOT NRF5_SDK_PATH)
+if(NOT DEFINED ENV{NRF5_SDK_PATH})
     message(FATAL_ERROR "The path to the nRF5 SDK (NRF5_SDK_PATH) must be set.")
 endif ()
 
-if (NOT NRFJPROG)
+if(NOT DEFINED ENV{NRFJPROG})
     message(FATAL_ERROR "The path to the nrfjprog utility (NRFJPROG) must be set.")
 endif ()
 
+if(NOT DEFINED ENV{NRF_CHIP})
+    message(FATAL_ERROR "The path to the nrfjprog utility (NRFJPROG) must be set.")
+endif ()
+
+if(DEFINED ENV{NRF_BOARD})
+    set(NRF_BOARD "$ENV{NRF_BOARD}")
+endif()
+
+if(DEFINED ENV{NRF_SOFTDEVICE})
+    set(NRF_SOFTDEVICE "$ENV{NRF_SOFTDEVICE}")
+endif()
+
+file(TO_CMAKE_PATH "$ENV{ARM_TOOLCHAIN_PATH}" ARM_TOOLCHAIN_PATH)
+file(TO_CMAKE_PATH "$ENV{NRF5_SDK_PATH}" NRF5_SDK_PATH)
+file(TO_CMAKE_PATH "$ENV{NRFJPROG}" NRFJPROG)
+
+set(NRF_CHIP "$ENV{NRF_CHIP}")
+
+# Check variable values and set corresponding values
 if(NRF_CHIP MATCHES "nrf52810")
+    add_compile_definitions(
+        NRF52810_XXAA
+    )
+    add_link_options(
+        -L${ARM_TOOLCHAIN_PATH}/arm-none-eabi/lib/thumb/v7e-m+fp/softfp/
+    )
 elseif(NRF_CHIP MATCHES "nrf52811")
+    add_compile_definitions(
+        NRF52811_XXAA
+    )
+    add_link_options(
+        -L${ARM_TOOLCHAIN_PATH}/arm-none-eabi/lib/thumb/v7e-m+fp/softfp/
+    )
 elseif(NRF_CHIP MATCHES "nrf52832")
+    add_compile_definitions(
+        NRF52832_XXAA
+    )
+    add_link_options(
+        -L${ARM_TOOLCHAIN_PATH}/arm-none-eabi/lib/thumb/v7e-m+fp/softfp/
+    )
 elseif(NRF_CHIP MATCHES "nrf52840")
+    add_compile_definitions(
+        NRF52840_XXAA
+    )
+    add_link_options(
+        -L${ARM_TOOLCHAIN_PATH}/arm-none-eabi/lib/thumb/v7e-m+fp/hard/
+    )
 else()
     message(FATAL_ERROR "Non correct value set for NRF_CHIP")
 endif()
 
+if(DEFINED NRF_BOARD)
+    if(NRF_BOARD MATCHES "pca10040")
+        add_compile_definitions(
+            BOARD_PCA10040
+        )
+    elseif(NRF_BOARD MATCHES "pca10056")
+        add_compile_definitions(
+            BOARD_PCA10056
+        )
+    else()
+        message(FATAL_ERROR "NRF_BOARD only supports pca10040 and pca10056")
+    endif()
+endif()
+
 if(NRF_SOFTDEVICE MATCHES "s112")
     add_compile_definitions(
-        BOARD_PCA10040
         S112
-        NRF52810_XXAA
     )
     set(NRF_SOFTDEVICE_PATH "${NRF5_SDK_PATH}/components/softdevice/s112/hex/s112_nrf52_6.1.1_softdevice.hex")
-    set(NRF5_LINKER_SCRIPT "${CMAKE_SOURCE_DIR}/components/softdevice/s112/toolchain/armgcc/armgcc_s112_nrf52810_xxaa.ld")
+    set(NRF5_LINKER_SCRIPT "${NRF5_SDK_PATH}/components/softdevice/s112/toolchain/armgcc/armgcc_s112_nrf52810_xxaa.ld")
 elseif(NRF_SOFTDEVICE MATCHES "s132")
     add_compile_definitions(
-        BOARD_PCA10040
         S132
-        NRF52832_XXAA
     )
     set(NRF_SOFTDEVICE_PATH "${NRF5_SDK_PATH}/components/softdevice/s132/hex/s132_nrf52_6.1.1_softdevice.hex")
-    set(NRF5_LINKER_SCRIPT "${CMAKE_SOURCE_DIR}/components/softdevice/s132/toolchain/armgcc/armgcc_s132_nrf52832_xxaa.ld")
+    set(NRF5_LINKER_SCRIPT "${NRF5_SDK_PATH}/components/softdevice/s132/toolchain/armgcc/armgcc_s132_nrf52832_xxaa.ld")
 elseif(NRF_SOFTDEVICE MATCHES "s140")
     add_compile_definitions(
-        BOARD_PCA10056
         S140
-        NRF52840_XXAA
     )
     set(NRF_SOFTDEVICE_PATH "${NRF5_SDK_PATH}/components/softdevice/s140/hex/s140_nrf52_6.1.1_softdevice.hex")
-    set(NRF5_LINKER_SCRIPT "${CMAKE_SOURCE_DIR}/components/softdevice/s132/toolchain/armgcc/armgcc_s132_nrf52832_xxaa.ld")
+    set(NRF5_LINKER_SCRIPT "${NRF5_SDK_PATH}/components/softdevice/s132/toolchain/armgcc/armgcc_s132_nrf52832_xxaa.ld")
 else()
     message(FATAL_ERROR "Non correct value set for NRF_SOFTDEVICE [s112, s132, s140]")
 endif()
 
+if(CMAKE_HOST_SYSTEM_NAME MATCHES "Windows")
+    set(EXECUTABLE_EXTENSION ".exe")
+else()
+    set(EXECUTABLE_EXTENSION "")
+endif()
+
+set(CMAKE_SYSTEM_NAME Generic)
+
+file(TO_CMAKE_PATH "${ARM_TOOLCHAIN_PATH}/bin/arm-none-eabi-gcc${EXECUTABLE_EXTENSION}" CMAKE_C_COMPILER)
+file(TO_CMAKE_PATH "${ARM_TOOLCHAIN_PATH}/bin/arm-none-eabi-c++${EXECUTABLE_EXTENSION}" CMAKE_CXX_COMPILER)
+file(TO_CMAKE_PATH "${ARM_TOOLCHAIN_PATH}/bin/arm-none-eabi-gcc${EXECUTABLE_EXTENSION}" CMAKE_ASM_COMPILER)
+file(TO_CMAKE_PATH "${ARM_TOOLCHAIN_PATH}/bin/arm-none-eabi-ld${EXECUTABLE_EXTENSION}" ARM_LINKER)
 add_compile_definitions(
     CONFIG_GPIO_AS_PINRESET
     FLOAT_ABI_HARD
@@ -62,6 +129,8 @@ add_compile_definitions(
     SOFTDEVICE_PRESENT
     SWI_DISABLE0
 )
+set(CMAKE_STATIC_LINKER_FLAGS_INIT "")
+set(CMAKE_EXE_LINKER_FLAGS_INIT "")
 
 add_compile_options(
     -mcpu=cortex-m4
@@ -72,23 +141,26 @@ add_compile_options(
     -mfpu=fpv4-sp-d16
 )
 
+# add_link_options(
+#     "LINKER:-eReset_Handler,--gc-sections,--emit-relocs,--print-memory-usage,-L${NRF5_SDK_PATH}/modules/nrfx/mdk,-T${NRF5_LINKER_SCRIPT},-Map=output.map"
+# )
+
 add_link_options(
-    -X
-    --omagic
     -eReset_Handler
-    --defsym=__vfprintf=__vfprintf_long
-    --defsym=__vfscanf=__vfscanf_long
-    -EL
     --gc-sections
     --emit-relocs
     --print-memory-usage
+    -L${NRF5_SDK_PATH}/modules/nrfx/mdk
     -T${NRF5_LINKER_SCRIPT}
+    -Map=output.map
 )
 
-set(CMAKE_C_COMPILER "${ARM_NONE_EABI_TOOLCHAIN_PATH}/bin/arm-none-eabi-gcc")
-set(CMAKE_CXX_COMPILER "${ARM_NONE_EABI_TOOLCHAIN_PATH}/bin/arm-none-eabi-c++")
-set(CMAKE_ASM_COMPILER "${ARM_NONE_EABI_TOOLCHAIN_PATH}/bin/arm-none-eabi-gcc")
+link_libraries(
+    -lc
+    -lnosys
+    -lm
+    -crt0
+)
 
-
-set(CMAKE_C_LINK_EXECUTABLE "${CMAKE_C_COMPILER} <LINK_FLAGS> <OBJECTS> -o <TARGET>")
-set(CMAKE_CXX_LINK_EXECUTABLE "${CMAKE_C_COMPILER} <LINK_FLAGS> <OBJECTS> -lstdc++ -o <TARGET>")
+set(CMAKE_C_LINK_EXECUTABLE "${ARM_LINKER} <LINK_FLAGS> <OBJECTS> -crt0.o -o <TARGET>")
+set(CMAKE_CXX_LINK_EXECUTABLE "${ARM_LINKER} <LINK_FLAGS> <OBJECTS> -lstdc++ -o <TARGET>")

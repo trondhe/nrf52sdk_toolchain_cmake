@@ -1,0 +1,3 @@
+C:/ws/nrf52sdk_toolchain_cmake/build/CMakeFiles/testexe.dir
+C:/ws/nrf52sdk_toolchain_cmake/build/CMakeFiles/edit_cache.dir
+C:/ws/nrf52sdk_toolchain_cmake/build/CMakeFiles/rebuild_cache.dir

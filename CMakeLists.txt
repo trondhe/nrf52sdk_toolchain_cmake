@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 
-project(nrf_sdk C ASM)
+project(nrf_sdk)
 
 set(INCLUDE_DIRS
     "$(PROJECT_SOURCE_DIR)/components"
@@ -121,8 +121,6 @@ set(INCLUDE_DIRS
     "$(PROJECT_SOURCE_DIR)/components/nfc/t4t_parser/hl_detection_procedure"
     "$(PROJECT_SOURCE_DIR)/components/nfc/t4t_parser/tlv"
     "$(PROJECT_SOURCE_DIR)/components/softdevice/common"
-    "$(PROJECT_SOURCE_DIR)/components/softdevice/s140/headers"
-    "$(PROJECT_SOURCE_DIR)/components/softdevice/s140/headers/nrf52"
     "$(PROJECT_SOURCE_DIR)/components/toolchain/cmsis/include"
     "$(PROJECT_SOURCE_DIR)/external/fnmatch"
     "$(PROJECT_SOURCE_DIR)/external/fprintf"
@@ -337,14 +335,21 @@ set(SRC_FILES
     "${PROJECT_SOURCE_DIR}/components/libraries/util/sdk_mapped_flags.c"
 )
 
-
-add_library(${PROJECT_NAME} ${SRC_FILES} STATIC)
-
-target_include_directories(${PROJECT_NAME}
-    PUBLIC ${INCLUDE_DIRS}
+list(APPEND INCLUDE_DIRS
+    "$(PROJECT_SOURCE_DIR)/components/softdevice/${NRF_SOFTDEVICE}/headers"
+    "$(PROJECT_SOURCE_DIR)/components/softdevice/${NRF_SOFTDEVICE}/headers/nrf52"
 )
 
-add_subdirectory(config)
-add_subdirectory(modules)
-add_subdirectory(integration)
+list(APPEND SRC_FILES
+    "${NRF5_SDK_PATH}/modules/nrfx/mdk/system_nrf52.c"
+    "${NRF5_SDK_PATH}/modules/nrfx/mdk/gcc_startup_nrf52.S"
+)
 
+# add_library(${PROJECT_NAME} ${SRC_FILES} STATIC)
+
+# target_include_directories(${PROJECT_NAME}
+#     PUBLIC ${INCLUDE_DIRS}
+# )
+
+# add_library(testlib mylib.cpp)
+add_executable(testexe myexe.cpp)
