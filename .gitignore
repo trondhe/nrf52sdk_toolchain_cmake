@@ -6,5 +6,6 @@
 
 # SEGGER Embedded Studio
 **/ses/Output
+*.emSession
 
 build/
