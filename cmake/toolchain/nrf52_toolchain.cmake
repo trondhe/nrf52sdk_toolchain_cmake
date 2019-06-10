@@ -5,10 +5,11 @@
 #s132 for nrf52810, nrf52832
 #s140 for nrf52840
 
-set(CMAKE_CXX_COMPILER_WORKS 1)
-set(CMAKE_C_COMPILER_WORKS 1)
-set(CMAKE_ASM_COMPILER_WORKS 1)
 # Set environment variables to cmake variables
+
+set(CMAKE_C_COMPILER_WORKS On)
+set(CMAKE_CXX_COMPILER_WORKS On)
+
 if(NOT DEFINED ENV{ARM_TOOLCHAIN_PATH})
     message(FATAL_ERROR "The path to the arm-none-eabi-gcc toolchain (ARM_TOOLCHAIN_PATH) must be set.")
 endif ()
@@ -44,30 +45,26 @@ if(NRF_CHIP MATCHES "nrf52810")
     add_compile_definitions(
         NRF52810_XXAA
     )
-    add_link_options(
-        -L${ARM_TOOLCHAIN_PATH}/arm-none-eabi/lib/thumb/v7e-m+fp/softfp/
-    )
+    set(COMPILER_LIBRARY_PATH_COMPONENT "/thumb/v7e-m+fp/softfp/")
+
 elseif(NRF_CHIP MATCHES "nrf52811")
     add_compile_definitions(
         NRF52811_XXAA
     )
-    add_link_options(
-        -L${ARM_TOOLCHAIN_PATH}/arm-none-eabi/lib/thumb/v7e-m+fp/softfp/
-    )
+    set(COMPILER_LIBRARY_PATH_COMPONENT "/thumb/v7e-m+fp/softfp/")
+
 elseif(NRF_CHIP MATCHES "nrf52832")
     add_compile_definitions(
         NRF52832_XXAA
     )
-    add_link_options(
-        -L${ARM_TOOLCHAIN_PATH}/arm-none-eabi/lib/thumb/v7e-m+fp/softfp/
-    )
+    set(COMPILER_LIBRARY_PATH_COMPONENT "/thumb/v7e-m+fp/softfp/")
+
 elseif(NRF_CHIP MATCHES "nrf52840")
     add_compile_definitions(
         NRF52840_XXAA
     )
-    add_link_options(
-        -L${ARM_TOOLCHAIN_PATH}/arm-none-eabi/lib/thumb/v7e-m+fp/hard/
-    )
+    set(COMPILER_LIBRARY_PATH_COMPONENT "/thumb/v7e-m+fp/softfp/")
+
 else()
     message(FATAL_ERROR "Non correct value set for NRF_CHIP")
 endif()
@@ -119,48 +116,66 @@ set(CMAKE_SYSTEM_NAME Generic)
 file(TO_CMAKE_PATH "${ARM_TOOLCHAIN_PATH}/bin/arm-none-eabi-gcc${EXECUTABLE_EXTENSION}" CMAKE_C_COMPILER)
 file(TO_CMAKE_PATH "${ARM_TOOLCHAIN_PATH}/bin/arm-none-eabi-c++${EXECUTABLE_EXTENSION}" CMAKE_CXX_COMPILER)
 file(TO_CMAKE_PATH "${ARM_TOOLCHAIN_PATH}/bin/arm-none-eabi-gcc${EXECUTABLE_EXTENSION}" CMAKE_ASM_COMPILER)
-file(TO_CMAKE_PATH "${ARM_TOOLCHAIN_PATH}/bin/arm-none-eabi-ld${EXECUTABLE_EXTENSION}" ARM_LINKER)
+file(TO_CMAKE_PATH "${ARM_TOOLCHAIN_PATH}/bin/arm-none-eabi-ld${EXECUTABLE_EXTENSION}" CMAKE_LINKER)
+
 add_compile_definitions(
     CONFIG_GPIO_AS_PINRESET
-    FLOAT_ABI_HARD
+    FLOAT_ABI_SOFT
     NRF52
     NRF52_PAN_74
     NRF_SD_BLE_API_VERSION=6
     SOFTDEVICE_PRESENT
     SWI_DISABLE0
 )
+
 set(CMAKE_STATIC_LINKER_FLAGS_INIT "")
 set(CMAKE_EXE_LINKER_FLAGS_INIT "")
 
 add_compile_options(
     -mcpu=cortex-m4
+    -mlittle-endian
     -mthumb
     -mabi=aapcs
     -Wall
-    -mfloat-abi=hard
-    -mfpu=fpv4-sp-d16
-)
+    -mfloat-abi=softfp
+    -mfpu=auto
+    -mtp=soft
+    -munaligned-access
+    -fno-builtin
+    -fdata-sections
+    -ffunction-sections
+    -fomit-frame-pointer
+    -fno-strict-aliasing
+    -fshort-enums
+    --specs=nano.specs
+)  
 
-# add_link_options(
-#     "LINKER:-eReset_Handler,--gc-sections,--emit-relocs,--print-memory-usage,-L${NRF5_SDK_PATH}/modules/nrfx/mdk,-T${NRF5_LINKER_SCRIPT},-Map=output.map"
-# )
+set(NRF5_LINKER_SCRIPT "${PROJECT_SOURCE_DIR}/script.ld")
+set(NRF5_LINKER_SCRIPT2 "${PROJECT_SOURCE_DIR}/modules/nrfx/mdk/nrf52_common.ld")
 
 add_link_options(
-    -eReset_Handler
-    --gc-sections
-    --emit-relocs
-    --print-memory-usage
-    -L${NRF5_SDK_PATH}/modules/nrfx/mdk
-    -T${NRF5_LINKER_SCRIPT}
-    -Map=output.map
+    "LINKER:--omagic,
+    -eReset_Handler,
+    -EL,
+    -nostdlib,
+    --gc-sections,
+    --emit-relocs,
+    --print-memory-usage,
+    -L${NRF5_SDK_PATH}/modules/nrfx/mdk,
+    -L${ARM_TOOLCHAIN_PATH}/lib/gcc/arm-none-eabi/8.2.1/${COMPILER_LIBRARY_PATH_COMPONENT},
+    -L${ARM_TOOLCHAIN_PATH}/arm-none-eabi/lib/${COMPILER_LIBRARY_PATH_COMPONENT},
+    -T${NRF5_LINKER_SCRIPT},
+    -T${NRF5_LINKER_SCRIPT2},
+    -Map=output.map"
 )
-
+# --print-memory-usage,
 link_libraries(
     -lc
     -lnosys
     -lm
-    -crt0
-)
+    )
 
-set(CMAKE_C_LINK_EXECUTABLE "${ARM_LINKER} <LINK_FLAGS> <OBJECTS> -crt0.o -o <TARGET>")
-set(CMAKE_CXX_LINK_EXECUTABLE "${ARM_LINKER} <LINK_FLAGS> <OBJECTS> -lstdc++ -o <TARGET>")
+set(CMAKE_C_LINK_EXECUTABLE "${CMAKE_C_COMPILER} <FLAGS> <LINK_FLAGS> <OBJECTS>  -o <TARGET> <LINK_LIBRARIES>")
+# set(CMAKE_C_LINK_EXECUTABLE "${CMAKE_CXX_COMPILER} <LINK_FLAGS> <OBJECTS> -o <TARGET>")
+set(CMAKE_CXX_LINK_EXECUTABLE "${CMAKE_C_COMPILER} <FLAGS> <CMAKE_CXX_LINK_FLAGS> <LINK_FLAGS> <OBJECTS>  -o <TARGET> <LINK_LIBRARIES>")
+# set(CMAKE_CXX_LINK_EXECUTABLE "${CMAKE_CXX_COMPILER} <CMAKE_CXX_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>")
