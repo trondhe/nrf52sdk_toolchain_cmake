@@ -3,136 +3,136 @@ cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 project(nrf_sdk C CXX ASM)
 
 set(INCLUDE_DIRS
-    "$(PROJECT_SOURCE_DIR)/components"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_advertising"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_db_discovery"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_dtm"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_racp"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_services/ble_ancs_c"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_services/ble_ans_c"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_services/ble_bas"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_services/ble_bas_c"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_services/ble_cscs"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_services/ble_cts_c"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_services/ble_dfu"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_services/ble_dis"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_services/ble_gls"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_services/ble_hids"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_services/ble_hrs"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_services/ble_hrs_c"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_services/ble_hts"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_services/ble_ias"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_services/ble_ias_c"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_services/ble_lbs"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_services/ble_lbs_c"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_services/ble_lls"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_services/ble_nus"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_services/ble_nus_c"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_services/ble_rscs"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_services/ble_rscs_c"
-    "$(PROJECT_SOURCE_DIR)/components/ble/ble_services/ble_tps"
-    "$(PROJECT_SOURCE_DIR)/components/ble/common"
-    "$(PROJECT_SOURCE_DIR)/components/ble/nrf_ble_gatt"
-    "$(PROJECT_SOURCE_DIR)/components/ble/nrf_ble_qwr"
-    "$(PROJECT_SOURCE_DIR)/components/ble/nrf_ble_scan"
-    "$(PROJECT_SOURCE_DIR)/components/ble/peer_manager"
-    "$(PROJECT_SOURCE_DIR)/components/boards"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/atomic"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/atomic_fifo"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/balloc"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/bootloader/ble_dfu"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/bsp"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/button"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/cli"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/cli/rtt"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/cli/uart"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/crc16"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/crc32"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/crypto"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/csense"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/csense_drv"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/delay"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/ecc"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/experimental_section_vars"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/experimental_task_manager"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/fds"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/fstorage"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/gfx"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/gpiote"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/hardfault"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/hci"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/led_softblink"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/log"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/log/src"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/low_power_pwm"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/mem_manager"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/memobj"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/mpu"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/mutex"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/pwm"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/pwr_mgmt"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/queue"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/ringbuf"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/scheduler"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/sdcard"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/slip"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/sortlist"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/spi_mngr"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/stack_guard"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/strerror"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/svc"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/timer"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/twi_mngr"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/twi_sensor"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/usbd"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/usbd/class/audio"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/usbd/class/cdc"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/usbd/class/cdc/acm"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/usbd/class/hid"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/usbd/class/hid/generic"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/usbd/class/hid/kbd"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/usbd/class/hid/mouse"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/usbd/class/msc"
-    "$(PROJECT_SOURCE_DIR)/components/libraries/util"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/ndef/conn_hand_parser"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/ndef/conn_hand_parser/ac_rec_parser"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/ndef/conn_hand_parser/ble_oob_advdata_parser"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/ndef/conn_hand_parser/le_oob_rec_parser"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/ndef/connection_handover/ac_rec"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/ndef/connection_handover/ble_oob_advdata"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/ndef/connection_handover/ble_pair_lib"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/ndef/connection_handover/ble_pair_msg"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/ndef/connection_handover/common"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/ndef/connection_handover/ep_oob_rec"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/ndef/connection_handover/hs_rec"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/ndef/connection_handover/le_oob_rec"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/ndef/generic/message"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/ndef/generic/record"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/ndef/launchapp"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/ndef/parser/message"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/ndef/parser/record"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/ndef/text"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/ndef/uri"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/t2t_lib"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/t2t_parser"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/t4t_lib"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/t4t_parser/apdu"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/t4t_parser/cc_file"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/t4t_parser/hl_detection_procedure"
-    "$(PROJECT_SOURCE_DIR)/components/nfc/t4t_parser/tlv"
-    "$(PROJECT_SOURCE_DIR)/components/softdevice/common"
-    "$(PROJECT_SOURCE_DIR)/components/toolchain/cmsis/include"
-    "$(PROJECT_SOURCE_DIR)/external/fnmatch"
-    "$(PROJECT_SOURCE_DIR)/external/fprintf"
-    "$(PROJECT_SOURCE_DIR)/external/segger_rtt"
-    "$(PROJECT_SOURCE_DIR)/external/utf_converter"
-    "$(PROJECT_SOURCE_DIR)/integration/nrfx"
-    "$(PROJECT_SOURCE_DIR)/integration/nrfx/legacy"
-    "$(PROJECT_SOURCE_DIR)/modules/nrfx"
-    "$(PROJECT_SOURCE_DIR)/modules/nrfx/drivers/include"
-    "$(PROJECT_SOURCE_DIR)/modules/nrfx/hal"
-    "$(PROJECT_SOURCE_DIR)/modules/nrfx/mdk"
-    "$(PROJECT_SOURCE_DIR)/config"
+    "${PROJECT_SOURCE_DIR}/components"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_advertising"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_db_discovery"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_dtm"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_racp"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_services/ble_ancs_c"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_services/ble_ans_c"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_services/ble_bas"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_services/ble_bas_c"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_services/ble_cscs"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_services/ble_cts_c"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_services/ble_dfu"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_services/ble_dis"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_services/ble_gls"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_services/ble_hids"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_services/ble_hrs"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_services/ble_hrs_c"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_services/ble_hts"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_services/ble_ias"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_services/ble_ias_c"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_services/ble_lbs"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_services/ble_lbs_c"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_services/ble_lls"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_services/ble_nus"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_services/ble_nus_c"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_services/ble_rscs"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_services/ble_rscs_c"
+    "${PROJECT_SOURCE_DIR}/components/ble/ble_services/ble_tps"
+    "${PROJECT_SOURCE_DIR}/components/ble/common"
+    "${PROJECT_SOURCE_DIR}/components/ble/nrf_ble_gatt"
+    "${PROJECT_SOURCE_DIR}/components/ble/nrf_ble_qwr"
+    "${PROJECT_SOURCE_DIR}/components/ble/nrf_ble_scan"
+    "${PROJECT_SOURCE_DIR}/components/ble/peer_manager"
+    "${PROJECT_SOURCE_DIR}/components/boards"
+    "${PROJECT_SOURCE_DIR}/components/libraries/atomic"
+    "${PROJECT_SOURCE_DIR}/components/libraries/atomic_fifo"
+    "${PROJECT_SOURCE_DIR}/components/libraries/balloc"
+    "${PROJECT_SOURCE_DIR}/components/libraries/bootloader/ble_dfu"
+    "${PROJECT_SOURCE_DIR}/components/libraries/bsp"
+    "${PROJECT_SOURCE_DIR}/components/libraries/button"
+    "${PROJECT_SOURCE_DIR}/components/libraries/cli"
+    "${PROJECT_SOURCE_DIR}/components/libraries/cli/rtt"
+    "${PROJECT_SOURCE_DIR}/components/libraries/cli/uart"
+    "${PROJECT_SOURCE_DIR}/components/libraries/crc16"
+    "${PROJECT_SOURCE_DIR}/components/libraries/crc32"
+    "${PROJECT_SOURCE_DIR}/components/libraries/crypto"
+    "${PROJECT_SOURCE_DIR}/components/libraries/csense"
+    "${PROJECT_SOURCE_DIR}/components/libraries/csense_drv"
+    "${PROJECT_SOURCE_DIR}/components/libraries/delay"
+    "${PROJECT_SOURCE_DIR}/components/libraries/ecc"
+    "${PROJECT_SOURCE_DIR}/components/libraries/experimental_section_vars"
+    "${PROJECT_SOURCE_DIR}/components/libraries/experimental_task_manager"
+    "${PROJECT_SOURCE_DIR}/components/libraries/fds"
+    "${PROJECT_SOURCE_DIR}/components/libraries/fstorage"
+    "${PROJECT_SOURCE_DIR}/components/libraries/gfx"
+    "${PROJECT_SOURCE_DIR}/components/libraries/gpiote"
+    "${PROJECT_SOURCE_DIR}/components/libraries/hardfault"
+    "${PROJECT_SOURCE_DIR}/components/libraries/hci"
+    "${PROJECT_SOURCE_DIR}/components/libraries/led_softblink"
+    "${PROJECT_SOURCE_DIR}/components/libraries/log"
+    "${PROJECT_SOURCE_DIR}/components/libraries/log/src"
+    "${PROJECT_SOURCE_DIR}/components/libraries/low_power_pwm"
+    "${PROJECT_SOURCE_DIR}/components/libraries/mem_manager"
+    "${PROJECT_SOURCE_DIR}/components/libraries/memobj"
+    "${PROJECT_SOURCE_DIR}/components/libraries/mpu"
+    "${PROJECT_SOURCE_DIR}/components/libraries/mutex"
+    "${PROJECT_SOURCE_DIR}/components/libraries/pwm"
+    "${PROJECT_SOURCE_DIR}/components/libraries/pwr_mgmt"
+    "${PROJECT_SOURCE_DIR}/components/libraries/queue"
+    "${PROJECT_SOURCE_DIR}/components/libraries/ringbuf"
+    "${PROJECT_SOURCE_DIR}/components/libraries/scheduler"
+    "${PROJECT_SOURCE_DIR}/components/libraries/sdcard"
+    "${PROJECT_SOURCE_DIR}/components/libraries/slip"
+    "${PROJECT_SOURCE_DIR}/components/libraries/sortlist"
+    "${PROJECT_SOURCE_DIR}/components/libraries/spi_mngr"
+    "${PROJECT_SOURCE_DIR}/components/libraries/stack_guard"
+    "${PROJECT_SOURCE_DIR}/components/libraries/strerror"
+    "${PROJECT_SOURCE_DIR}/components/libraries/svc"
+    "${PROJECT_SOURCE_DIR}/components/libraries/timer"
+    "${PROJECT_SOURCE_DIR}/components/libraries/twi_mngr"
+    "${PROJECT_SOURCE_DIR}/components/libraries/twi_sensor"
+    "${PROJECT_SOURCE_DIR}/components/libraries/usbd"
+    "${PROJECT_SOURCE_DIR}/components/libraries/usbd/class/audio"
+    "${PROJECT_SOURCE_DIR}/components/libraries/usbd/class/cdc"
+    "${PROJECT_SOURCE_DIR}/components/libraries/usbd/class/cdc/acm"
+    "${PROJECT_SOURCE_DIR}/components/libraries/usbd/class/hid"
+    "${PROJECT_SOURCE_DIR}/components/libraries/usbd/class/hid/generic"
+    "${PROJECT_SOURCE_DIR}/components/libraries/usbd/class/hid/kbd"
+    "${PROJECT_SOURCE_DIR}/components/libraries/usbd/class/hid/mouse"
+    "${PROJECT_SOURCE_DIR}/components/libraries/usbd/class/msc"
+    "${PROJECT_SOURCE_DIR}/components/libraries/util"
+    "${PROJECT_SOURCE_DIR}/components/nfc/ndef/conn_hand_parser"
+    "${PROJECT_SOURCE_DIR}/components/nfc/ndef/conn_hand_parser/ac_rec_parser"
+    "${PROJECT_SOURCE_DIR}/components/nfc/ndef/conn_hand_parser/ble_oob_advdata_parser"
+    "${PROJECT_SOURCE_DIR}/components/nfc/ndef/conn_hand_parser/le_oob_rec_parser"
+    "${PROJECT_SOURCE_DIR}/components/nfc/ndef/connection_handover/ac_rec"
+    "${PROJECT_SOURCE_DIR}/components/nfc/ndef/connection_handover/ble_oob_advdata"
+    "${PROJECT_SOURCE_DIR}/components/nfc/ndef/connection_handover/ble_pair_lib"
+    "${PROJECT_SOURCE_DIR}/components/nfc/ndef/connection_handover/ble_pair_msg"
+    "${PROJECT_SOURCE_DIR}/components/nfc/ndef/connection_handover/common"
+    "${PROJECT_SOURCE_DIR}/components/nfc/ndef/connection_handover/ep_oob_rec"
+    "${PROJECT_SOURCE_DIR}/components/nfc/ndef/connection_handover/hs_rec"
+    "${PROJECT_SOURCE_DIR}/components/nfc/ndef/connection_handover/le_oob_rec"
+    "${PROJECT_SOURCE_DIR}/components/nfc/ndef/generic/message"
+    "${PROJECT_SOURCE_DIR}/components/nfc/ndef/generic/record"
+    "${PROJECT_SOURCE_DIR}/components/nfc/ndef/launchapp"
+    "${PROJECT_SOURCE_DIR}/components/nfc/ndef/parser/message"
+    "${PROJECT_SOURCE_DIR}/components/nfc/ndef/parser/record"
+    "${PROJECT_SOURCE_DIR}/components/nfc/ndef/text"
+    "${PROJECT_SOURCE_DIR}/components/nfc/ndef/uri"
+    "${PROJECT_SOURCE_DIR}/components/nfc/t2t_lib"
+    "${PROJECT_SOURCE_DIR}/components/nfc/t2t_parser"
+    "${PROJECT_SOURCE_DIR}/components/nfc/t4t_lib"
+    "${PROJECT_SOURCE_DIR}/components/nfc/t4t_parser/apdu"
+    "${PROJECT_SOURCE_DIR}/components/nfc/t4t_parser/cc_file"
+    "${PROJECT_SOURCE_DIR}/components/nfc/t4t_parser/hl_detection_procedure"
+    "${PROJECT_SOURCE_DIR}/components/nfc/t4t_parser/tlv"
+    "${PROJECT_SOURCE_DIR}/components/softdevice/common"
+    "${PROJECT_SOURCE_DIR}/components/toolchain/cmsis/include"
+    "${PROJECT_SOURCE_DIR}/external/fnmatch"
+    "${PROJECT_SOURCE_DIR}/external/fprintf"
+    "${PROJECT_SOURCE_DIR}/external/segger_rtt"
+    "${PROJECT_SOURCE_DIR}/external/utf_converter"
+    "${PROJECT_SOURCE_DIR}/integration/nrfx"
+    "${PROJECT_SOURCE_DIR}/integration/nrfx/legacy"
+    "${PROJECT_SOURCE_DIR}/modules/nrfx"
+    "${PROJECT_SOURCE_DIR}/modules/nrfx/drivers/include"
+    "${PROJECT_SOURCE_DIR}/modules/nrfx/hal"
+    "${PROJECT_SOURCE_DIR}/modules/nrfx/mdk"
+    "${PROJECT_SOURCE_DIR}/config"
 )
 
 set(SRC_FILES
@@ -335,24 +335,74 @@ set(SRC_FILES
     "${PROJECT_SOURCE_DIR}/components/libraries/util/sdk_mapped_flags.c"
 )
 
-list(APPEND INCLUDE_DIRS
-    "$(PROJECT_SOURCE_DIR)/components/softdevice/${NRF_SOFTDEVICE}/headers"
-    "$(PROJECT_SOURCE_DIR)/components/softdevice/${NRF_SOFTDEVICE}/headers/nrf52"
-)
-
-list(APPEND SRC_FILES
-    "${NRF5_SDK_PATH}/modules/nrfx/mdk/system_nrf52.c"
-    "${NRF5_SDK_PATH}/modules/nrfx/mdk/gcc_startup_nrf52.S"
-)
-
-# add_library(${PROJECT_NAME} ${SRC_FILES} STATIC)
-
-# target_include_directories(${PROJECT_NAME}
-#     PUBLIC ${INCLUDE_DIRS}
+# list(APPEND INCLUDE_DIRS
+#     "${PROJECT_SOURCE_DIR}/components/softdevice/${NRF_SOFTDEVICE}/headers"
+#     "${PROJECT_SOURCE_DIR}/components/softdevice/${NRF_SOFTDEVICE}/headers/nrf52"
 # )
 
-# add_library(testlib mylib.cpp)
-add_executable(testexe 
-    myexe.cpp
+set(BLINKY_SRC 
+    ${PROJECT_SOURCE_DIR}/components/libraries/log/src/nrf_log_frontend.c
+    ${PROJECT_SOURCE_DIR}/components/libraries/log/src/nrf_log_str_formatter.c
+    ${PROJECT_SOURCE_DIR}/components/boards/boards.c
+    ${PROJECT_SOURCE_DIR}/components/libraries/util/app_error.c
+    ${PROJECT_SOURCE_DIR}/components/libraries/util/app_error_handler_gcc.c
+    ${PROJECT_SOURCE_DIR}/components/libraries/util/app_error_weak.c
+    ${PROJECT_SOURCE_DIR}/components/libraries/util/app_util_platform.c
+    ${PROJECT_SOURCE_DIR}/components/libraries/util/nrf_assert.c
+    ${PROJECT_SOURCE_DIR}/components/libraries/atomic/nrf_atomic.c
+    ${PROJECT_SOURCE_DIR}/components/libraries/balloc/nrf_balloc.c
+    ${PROJECT_SOURCE_DIR}/external/fprintf/nrf_fprintf.c
+    ${PROJECT_SOURCE_DIR}/external/fprintf/nrf_fprintf_format.c
+    ${PROJECT_SOURCE_DIR}/components/libraries/memobj/nrf_memobj.c
+    ${PROJECT_SOURCE_DIR}/components/libraries/ringbuf/nrf_ringbuf.c
+    ${PROJECT_SOURCE_DIR}/components/libraries/strerror/nrf_strerror.c
+    ${PROJECT_SOURCE_DIR}/modules/nrfx/soc/nrfx_atomic.c
 )
 
+set(INCLUDE_DIRS2
+    ${PROJECT_SOURCE_DIR}/components
+    ${PROJECT_SOURCE_DIR}/modules/nrfx/mdk
+    ${PROJECT_SOURCE_DIR}/components/libraries/strerror
+    ${PROJECT_SOURCE_DIR}/components/toolchain/cmsis/include
+    ${PROJECT_SOURCE_DIR}/components/libraries/util
+    ${PROJECT_SOURCE_DIR}/components/libraries/balloc
+    ${PROJECT_SOURCE_DIR}/components/libraries/ringbuf
+    ${PROJECT_SOURCE_DIR}/modules/nrfx/hal
+    ${PROJECT_SOURCE_DIR}/components/libraries/bsp
+    ${PROJECT_SOURCE_DIR}/components/libraries/log
+    ${PROJECT_SOURCE_DIR}/modules/nrfx
+    ${PROJECT_SOURCE_DIR}/components/libraries/experimental_section_vars
+    ${PROJECT_SOURCE_DIR}/components/libraries/delay
+    ${PROJECT_SOURCE_DIR}/integration/nrfx
+    ${PROJECT_SOURCE_DIR}/components/drivers_nrf/nrf_soc_nosd
+    ${PROJECT_SOURCE_DIR}/components/libraries/atomic
+    ${PROJECT_SOURCE_DIR}/components/boards
+    ${PROJECT_SOURCE_DIR}/components/libraries/memobj
+    ${PROJECT_SOURCE_DIR}/external/fprintf
+    ${PROJECT_SOURCE_DIR}/components/libraries/log/src
+)
+
+add_library(${PROJECT_NAME} STATIC ${BLINKY_SRC} ${SRC_FILES})
+
+target_include_directories(${PROJECT_NAME}
+    PUBLIC
+        ${INCLUDE_DIRS}
+        ${INCLUDE_DIRS2}
+)
+
+add_executable(testexe 
+    myexe.cpp
+    ${NRF_STARTUP_SRC}
+)
+
+target_link_libraries(testexe
+    PUBLIC
+        ${PROJECT_NAME}
+)
+
+# target_include_directories(testexe
+#     PUBLIC
+#         ${INCLUDE_DIRS}
+#         ${INCLUDE_DIRS2}
+#         ${PROJECT_SOURCE_DIR}/examples/peripheral/blinky/pca10040/blank/config/
+# )

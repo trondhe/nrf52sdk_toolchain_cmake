@@ -3,7 +3,7 @@
 /* Linker script to configure memory regions. */
 
 SEARCH_DIR(.)
-GROUP(-lgcc -lc -lnosys)
+/*GROUP(-lgcc -lc -lnosys)*/
 
 MEMORY
 {

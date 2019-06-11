@@ -29,6 +29,8 @@ endif()
 
 if(DEFINED ENV{NRF_SOFTDEVICE})
     set(NRF_SOFTDEVICE "$ENV{NRF_SOFTDEVICE}")
+else()
+    set(NRF_SOFTDEVICE "None")
 endif()
 
 file(TO_CMAKE_PATH "$ENV{ARM_TOOLCHAIN_PATH}" ARM_TOOLCHAIN_PATH)
@@ -39,24 +41,40 @@ set(NRF_CHIP "$ENV{NRF_CHIP}")
 
 # Check variable values and set corresponding values
 if(NRF_CHIP MATCHES "nrf52810")
+    include_directories(
+        "${NRF5_SDK_PATH}/components/softdevice/mbr/nrf52810/headers"
+        "${NRF5_SDK_PATH}/config/nrf52810/config"
+    )
     add_compile_definitions(
         NRF52810_XXAA
     )
     set(COMPILER_LIBRARY_PATH_COMPONENT "/thumb/v7e-m+fp/softfp/")
 
 elseif(NRF_CHIP MATCHES "nrf52811")
+    include_directories(
+        "${NRF5_SDK_PATH}/components/softdevice/mbr/nrf52810/headers"
+        "${NRF5_SDK_PATH}/config/nrf52810/config"
+    )
     add_compile_definitions(
         NRF52811_XXAA
     )
     set(COMPILER_LIBRARY_PATH_COMPONENT "/thumb/v7e-m+fp/softfp/")
 
 elseif(NRF_CHIP MATCHES "nrf52832")
+    include_directories(
+        "${NRF5_SDK_PATH}/components/softdevice/mbr/nrf52832/headers"
+        "${NRF5_SDK_PATH}/config/nrf52832/config"
+    )
     add_compile_definitions(
         NRF52832_XXAA
     )
     set(COMPILER_LIBRARY_PATH_COMPONENT "/thumb/v7e-m+fp/softfp/")
 
 elseif(NRF_CHIP MATCHES "nrf52840")
+    include_directories(
+        "${NRF5_SDK_PATH}/components/softdevice/mbr/nrf52840/headers"
+        "${NRF5_SDK_PATH}/config/nrf52840/config"
+    )
     add_compile_definitions(
         NRF52840_XXAA
     )
@@ -81,25 +99,45 @@ if(DEFINED NRF_BOARD)
 endif()
 
 if(NRF_SOFTDEVICE MATCHES "s112")
+    include_directories(
+        "${PROJECT_SOURCE_DIR}/components/softdevice/s112/headers"
+        "${PROJECT_SOURCE_DIR}/components/softdevice/s112/headers/nrf52"
+    )
     add_compile_definitions(
         S112
     )
     set(NRF_SOFTDEVICE_PATH "${NRF5_SDK_PATH}/components/softdevice/s112/hex/s112_nrf52_6.1.1_softdevice.hex")
     set(NRF5_LINKER_SCRIPT "${NRF5_SDK_PATH}/components/softdevice/s112/toolchain/armgcc/armgcc_s112_nrf52810_xxaa.ld")
+
 elseif(NRF_SOFTDEVICE MATCHES "s132")
+    include_directories(
+        "${NRF5_SDK_PATH}/components/softdevice/s132/headers"
+        "${NRF5_SDK_PATH}/components/softdevice/s132/headers/nrf52"
+    )
     add_compile_definitions(
         S132
     )
     set(NRF_SOFTDEVICE_PATH "${NRF5_SDK_PATH}/components/softdevice/s132/hex/s132_nrf52_6.1.1_softdevice.hex")
     set(NRF5_LINKER_SCRIPT "${NRF5_SDK_PATH}/components/softdevice/s132/toolchain/armgcc/armgcc_s132_nrf52832_xxaa.ld")
+
 elseif(NRF_SOFTDEVICE MATCHES "s140")
+    include_directories(
+        "${NRF5_SDK_PATH}/components/softdevice/s140/headers"
+        "${NRF5_SDK_PATH}/components/softdevice/s140/headers/nrf52"
+    )
     add_compile_definitions(
         S140
     )
     set(NRF_SOFTDEVICE_PATH "${NRF5_SDK_PATH}/components/softdevice/s140/hex/s140_nrf52_6.1.1_softdevice.hex")
     set(NRF5_LINKER_SCRIPT "${NRF5_SDK_PATH}/components/softdevice/s132/toolchain/armgcc/armgcc_s132_nrf52832_xxaa.ld")
+    
+elseif(NRF_SOFTDEVICE MATCHES "None")
+    include_directories(
+        "${NRF5_SDK_PATH}/components/drivers_nrf/nrf_soc_nosd"
+    )
+
 else()
-    message(FATAL_ERROR "Non correct value set for NRF_SOFTDEVICE [s112, s132, s140]")
+    message(FATAL_ERROR "Non correct value set for NRF_SOFTDEVICE, possible: [s112, s132, s140, None]")
 endif()
 
 if(CMAKE_HOST_SYSTEM_NAME MATCHES "Windows")
@@ -150,8 +188,8 @@ add_compile_options(
 set(NRF5_LINKER_SCRIPT "${NRF5_SDK_PATH}/script.ld")
 
 add_link_options(
-    "LINKER:--omagic,
-    -eReset_Handler,
+    "LINKER:
+    --omagic,
     -EL,
     -nostdlib,
     --gc-sections,
@@ -165,9 +203,8 @@ add_link_options(
 )
 
 link_libraries(
-    -lc
-    -lnosys
-    -lm
+    -Wl,--start-group -lc -lnosys -lm -lgcc
+    -Wl,--end-group
 )
 
 set(CMAKE_C_LINK_EXECUTABLE "${CMAKE_C_COMPILER} <FLAGS> <LINK_FLAGS> <OBJECTS>  -o <TARGET> <LINK_LIBRARIES>")
