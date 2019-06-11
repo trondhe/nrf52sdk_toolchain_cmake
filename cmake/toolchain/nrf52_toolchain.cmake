@@ -178,6 +178,6 @@ set(NRF_STARTUP_SRC
     "${NRF5_SDK_PATH}/modules/nrfx/mdk/gcc_startup_nrf52.S"
 )
 
-include_directories
+include_directories(
     "${NRF5_SDK_PATH}/components/toolchain/cmsis/include/"
 )
