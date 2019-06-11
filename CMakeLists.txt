@@ -354,11 +354,5 @@ list(APPEND SRC_FILES
 # add_library(testlib mylib.cpp)
 add_executable(testexe 
     myexe.cpp
-    "${NRF5_SDK_PATH}/modules/nrfx/mdk/system_nrf52.c"
-    "${NRF5_SDK_PATH}/modules/nrfx/mdk/gcc_startup_nrf52.S"
 )
 
-target_include_directories(testexe
-    PRIVATE
-        "${NRF5_SDK_PATH}/components/toolchain/cmsis/include/"
-)

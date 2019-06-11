@@ -7,9 +7,6 @@
 
 # Set environment variables to cmake variables
 
-set(CMAKE_C_COMPILER_WORKS On)
-set(CMAKE_CXX_COMPILER_WORKS On)
-
 if(NOT DEFINED ENV{ARM_TOOLCHAIN_PATH})
     message(FATAL_ERROR "The path to the arm-none-eabi-gcc toolchain (ARM_TOOLCHAIN_PATH) must be set.")
 endif ()
@@ -150,8 +147,7 @@ add_compile_options(
     --specs=nano.specs
 )  
 
-set(NRF5_LINKER_SCRIPT "${PROJECT_SOURCE_DIR}/script.ld")
-set(NRF5_LINKER_SCRIPT2 "${PROJECT_SOURCE_DIR}/modules/nrfx/mdk/nrf52_common.ld")
+set(NRF5_LINKER_SCRIPT "${NRF5_SDK_PATH}/script.ld")
 
 add_link_options(
     "LINKER:--omagic,
@@ -165,17 +161,23 @@ add_link_options(
     -L${ARM_TOOLCHAIN_PATH}/lib/gcc/arm-none-eabi/8.2.1/${COMPILER_LIBRARY_PATH_COMPONENT},
     -L${ARM_TOOLCHAIN_PATH}/arm-none-eabi/lib/${COMPILER_LIBRARY_PATH_COMPONENT},
     -T${NRF5_LINKER_SCRIPT},
-    -T${NRF5_LINKER_SCRIPT2},
     -Map=output.map"
 )
-# --print-memory-usage,
+
 link_libraries(
     -lc
     -lnosys
     -lm
-    )
+)
 
 set(CMAKE_C_LINK_EXECUTABLE "${CMAKE_C_COMPILER} <FLAGS> <LINK_FLAGS> <OBJECTS>  -o <TARGET> <LINK_LIBRARIES>")
-# set(CMAKE_C_LINK_EXECUTABLE "${CMAKE_CXX_COMPILER} <LINK_FLAGS> <OBJECTS> -o <TARGET>")
 set(CMAKE_CXX_LINK_EXECUTABLE "${CMAKE_C_COMPILER} <FLAGS> <CMAKE_CXX_LINK_FLAGS> <LINK_FLAGS> <OBJECTS>  -o <TARGET> <LINK_LIBRARIES>")
-# set(CMAKE_CXX_LINK_EXECUTABLE "${CMAKE_CXX_COMPILER} <CMAKE_CXX_LINK_FLAGS> <LINK_FLAGS> <OBJECTS> -o <TARGET> <LINK_LIBRARIES>")
+
+set(NRF_STARTUP_SRC 
+    "${NRF5_SDK_PATH}/modules/nrfx/mdk/system_nrf52.c"
+    "${NRF5_SDK_PATH}/modules/nrfx/mdk/gcc_startup_nrf52.S"
+)
+
+include_directories
+    "${NRF5_SDK_PATH}/components/toolchain/cmsis/include/"
+)
