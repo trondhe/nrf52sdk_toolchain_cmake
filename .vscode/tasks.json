@@ -1,0 +1,102 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "options": {
+        "env": {
+            "ARM_TOOLCHAIN_PATH": "D:/gnu_arm/7_2018_q2",
+            "NRF5_SDK_PATH": "D:/nrf5_sdk_15_3",
+            "NRFJPROG": "C:/Program Files/Nordic Semiconductor/nrf5x/bin/nrfjprog.exe",
+            "NRF_CHIP": "nrf52832",
+            "NRF_BOARD": "pca10040",
+            "NRF_SOFTDEVICE": "s132"
+        }
+    },
+    "tasks": [
+        {
+            "label": "cmake configure",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "-Bbuild",
+                "-GNinja",
+                "-DCMAKE_TOOLCHAIN_FILE=D:/nrf5_sdk_15_3/cmake/toolchain/nrf52_toolchain.cmake",
+                "."
+            ],
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "cmake build",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "build"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "flash_build",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "build",
+                "--target",
+                "flash_build"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "flash_softdevice",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "build",
+                "--target",
+                "flash_softdevice"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "nrf_reset",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "build",
+                "--target",
+                "nrf_reset"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "clean",
+            "type": "shell",
+            "linux": {
+                "command": "rm",
+                "args": [
+                    "-r",
+                    "build"
+                ]
+            },
+            "windows": {
+                "command": "rd",
+                "args": [
+                    "/s",
+                    "/q",
+                    "build"
+                ]
+            },
+            "problemMatcher": []
+        }
+    ]
+}

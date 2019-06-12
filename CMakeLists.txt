@@ -63,7 +63,7 @@ target_include_directories(${PROJECT_NAME}
 
 set(NRF_EXE blinky)
 
-add_executable(${NRF_EXE} 
+add_executable(${NRF_EXE}
     myexe.cpp
     ${NRF_STARTUP_SRC}
 )
@@ -79,14 +79,14 @@ COMMAND ${ARM_TOOLCHAIN_PATH}/bin/arm-none-eabi-objcopy -O binary ${NRF_EXE}.out
 COMMAND ${ARM_TOOLCHAIN_PATH}/bin/arm-none-eabi-objcopy -O ihex ${NRF_EXE}.out "${NRF_EXE}.hex"
 COMMENT "convert executable to hex file")
 
-add_custom_target("nrf_exe_upload"
-COMMAND ${NRFJPROG} --family NRF52 --program ${NRF_EXE}.hex --verify --sectorerase
+add_custom_target(flash_build
+COMMAND ${NRFJPROG} -f NRF52 --program ${NRF_EXE}.hex --verify --sectorerase
 DEPENDS ${NRF_EXE}
 COMMENT "uploading ${NRF_EXE}.hex"
 )
 
-add_custom_target(nrf_softdevice_upload
-COMMAND ${NRFJPROG} --program ${NRF_SOFTDEVICE_PATH} -f NRF52 --verify --sectorerase
+add_custom_target(flash_softdevice
+COMMAND ${NRFJPROG} -f NRF52 --program ${NRF_SOFTDEVICE_PATH} --verify --sectorerase
 COMMAND ${NRFJPROG} --reset -f NRF52
 COMMENT "flashing softdevice ${NRF_SOFTDEVICE}"
 )

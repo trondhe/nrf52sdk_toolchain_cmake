@@ -149,6 +149,7 @@ endif()
 set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_EXECUTABLE_SUFFIX_C ".out")
 set(CMAKE_EXECUTABLE_SUFFIX_CXX ".out")
+set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
 file(TO_CMAKE_PATH "${ARM_TOOLCHAIN_PATH}/bin/arm-none-eabi-gcc${EXECUTABLE_EXTENSION}" CMAKE_C_COMPILER)
 file(TO_CMAKE_PATH "${ARM_TOOLCHAIN_PATH}/bin/arm-none-eabi-c++${EXECUTABLE_EXTENSION}" CMAKE_CXX_COMPILER)
@@ -163,6 +164,8 @@ add_compile_definitions(
     NRF_SD_BLE_API_VERSION=6
     SOFTDEVICE_PRESENT
     SWI_DISABLE0
+    __STARTUP_CLEAR_BSS
+    _start=main
 )
 
 set(CMAKE_STATIC_LINKER_FLAGS_INIT "")
@@ -184,6 +187,7 @@ add_compile_options(
     -fno-strict-aliasing
     -fshort-enums
     --specs=nano.specs
+    --specs=nosys.specs
 )  
 
 set(NRF5_LINKER_SCRIPT "${NRF5_SDK_PATH}/script.ld")
