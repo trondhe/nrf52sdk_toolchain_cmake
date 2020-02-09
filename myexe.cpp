@@ -56,7 +56,7 @@
 /**
  * @brief Function for application main entry.
  */
-int main(void)
+int _start(void)
 {
     /* Configure board. */
     bsp_board_init(BSP_INIT_LEDS);

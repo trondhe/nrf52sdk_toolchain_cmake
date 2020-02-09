@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
-
+set(CMAKE_EXPORT_COMPILE_COMMANDS true)
 project(nrf_sdk C CXX ASM)
 
 set(BLINKY_SRC 
